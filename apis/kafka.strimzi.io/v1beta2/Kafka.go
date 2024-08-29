@@ -36,9 +36,6 @@ func (j *KafkaSpec) UnmarshalJSON(b []byte) error {
 	if v, ok := raw["kafka"]; !ok || v == nil {
 		return fmt.Errorf("field kafka: required")
 	}
-	if v, ok := raw["zookeeper"]; !ok || v == nil {
-		return fmt.Errorf("field zookeeper: required")
-	}
 	type Plain KafkaSpec
 	var plain Plain
 	if err := json.Unmarshal(b, &plain); err != nil {
@@ -137,7 +134,7 @@ type KafkaSpec struct {
 	MaintenanceTimeWindows []string `json:"maintenanceTimeWindows,omitempty"`
 
 	// Configuration of the ZooKeeper cluster.
-	Zookeeper KafkaSpecZookeeper `json:"zookeeper"`
+	Zookeeper KafkaSpecZookeeper `json:"zookeeper,omitempty"`
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
@@ -2974,12 +2971,6 @@ func (j *KafkaSpecKafka) UnmarshalJSON(b []byte) error {
 	if v, ok := raw["listeners"]; !ok || v == nil {
 		return fmt.Errorf("field listeners: required")
 	}
-	if v, ok := raw["replicas"]; !ok || v == nil {
-		return fmt.Errorf("field replicas: required")
-	}
-	if v, ok := raw["storage"]; !ok || v == nil {
-		return fmt.Errorf("field storage: required")
-	}
 	type Plain KafkaSpecKafka
 	var plain Plain
 	if err := json.Unmarshal(b, &plain); err != nil {
@@ -5234,13 +5225,13 @@ type KafkaSpecKafka struct {
 	ReadinessProbe *KafkaSpecKafkaReadinessProbe `json:"readinessProbe,omitempty"`
 
 	// The number of pods in the cluster.
-	Replicas int32 `json:"replicas"`
+	Replicas int32 `json:"replicas,omitempty"`
 
 	// CPU and memory resources to reserve.
 	Resources *KafkaSpecKafkaResources `json:"resources,omitempty"`
 
 	// Storage configuration (disk). Cannot be updated.
-	Storage KafkaSpecKafkaStorage `json:"storage"`
+	Storage KafkaSpecKafkaStorage `json:"storage,omitempty"`
 
 	// Template for Kafka cluster resources. The template allows users to specify how
 	// the `StatefulSet`, `Pods`, and `Services` are generated.
