@@ -134,7 +134,7 @@ type KafkaSpec struct {
 	MaintenanceTimeWindows []string `json:"maintenanceTimeWindows,omitempty"`
 
 	// Configuration of the ZooKeeper cluster.
-	Zookeeper KafkaSpecZookeeper `json:"zookeeper,omitempty"`
+	Zookeeper *KafkaSpecZookeeper `json:"zookeeper,omitempty"`
 }
 
 // UnmarshalJSON implements json.Unmarshaler.
@@ -2786,9 +2786,6 @@ func (j *KafkaSpecKafkaStorageVolumesElem) UnmarshalJSON(b []byte) error {
 	if err := json.Unmarshal(b, &raw); err != nil {
 		return err
 	}
-	if v, ok := raw["type"]; !ok || v == nil {
-		return fmt.Errorf("field type: required")
-	}
 	type Plain KafkaSpecKafkaStorageVolumesElem
 	var plain Plain
 	if err := json.Unmarshal(b, &plain); err != nil {
@@ -3107,9 +3104,6 @@ func (j *KafkaSpecZookeeperStorage) UnmarshalJSON(b []byte) error {
 	var raw map[string]interface{}
 	if err := json.Unmarshal(b, &raw); err != nil {
 		return err
-	}
-	if v, ok := raw["type"]; !ok || v == nil {
-		return fmt.Errorf("field type: required")
 	}
 	type Plain KafkaSpecZookeeperStorage
 	var plain Plain
@@ -5216,13 +5210,13 @@ type KafkaSpecKafka struct {
 	ReadinessProbe *KafkaSpecKafkaReadinessProbe `json:"readinessProbe,omitempty"`
 
 	// The number of pods in the cluster.
-	Replicas int32 `json:"replicas,omitempty"`
+	Replicas *int32 `json:"replicas,omitempty"`
 
 	// CPU and memory resources to reserve.
 	Resources *KafkaSpecKafkaResources `json:"resources,omitempty"`
 
 	// Storage configuration (disk). Cannot be updated.
-	Storage KafkaSpecKafkaStorage `json:"storage,omitempty"`
+	Storage *KafkaSpecKafkaStorage `json:"storage,omitempty"`
 
 	// Template for Kafka cluster resources. The template allows users to specify how
 	// the `StatefulSet`, `Pods`, and `Services` are generated.
@@ -7092,7 +7086,7 @@ type KafkaSpecKafkaStorageVolumesElem struct {
 	SizeLimit *string `json:"sizeLimit,omitempty"`
 
 	// Storage type, must be either 'ephemeral' or 'persistent-claim'.
-	Type KafkaSpecKafkaStorageVolumesElemType `json:"type"`
+	Type KafkaSpecKafkaStorageVolumesElemType `json:"type,omitempty"`
 }
 
 type KafkaSpecKafkaStorageVolumesElemOverridesElem struct {
@@ -8459,13 +8453,13 @@ type KafkaSpecZookeeper struct {
 	ReadinessProbe *KafkaSpecZookeeperReadinessProbe `json:"readinessProbe,omitempty"`
 
 	// The number of pods in the cluster.
-	Replicas int32 `json:"replicas,omitempty"`
+	Replicas *int32 `json:"replicas,omitempty"`
 
 	// CPU and memory resources to reserve.
 	Resources *KafkaSpecZookeeperResources `json:"resources,omitempty"`
 
 	// Storage configuration (disk). Cannot be updated.
-	Storage KafkaSpecZookeeperStorage `json:"storage,omitempty"`
+	Storage *KafkaSpecZookeeperStorage `json:"storage,omitempty"`
 
 	// Template for ZooKeeper cluster resources. The template allows users to specify
 	// how the `StatefulSet`, `Pods`, and `Services` are generated.
@@ -8690,7 +8684,7 @@ type KafkaSpecZookeeperStorage struct {
 	SizeLimit *string `json:"sizeLimit,omitempty"`
 
 	// Storage type, must be either 'ephemeral' or 'persistent-claim'.
-	Type KafkaSpecZookeeperStorageType `json:"type"`
+	Type *KafkaSpecZookeeperStorageType `json:"type,omitempty"`
 }
 
 type KafkaSpecZookeeperStorageOverridesElem struct {
